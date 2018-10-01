@@ -87,7 +87,11 @@ class IDBShell {
     let fields = Object.keys(selector);
     return this.command(this._store, "READ_ALL", {})
       .then(docs => docs.filter(doc => fields.every(field => {
-        return doc[field] === selector[field]
+        if (field === '_id') {
+          return doc[field].toString() === selector[field];
+        } else {
+          return doc[field] === selector[field]
+        }
       }))
       );
   }
